@@ -57,12 +57,13 @@ Component({
           })
         }
       })
-
+      this.triggerEvent('closePoster');
     },
     onShareCancel: function onShareCandel() {
       this.setData({
         showPoster: false
       });
+      this.triggerEvent('closePoster');
     },
     close: function close(e) {
       if (this.data.maskClosable) {
