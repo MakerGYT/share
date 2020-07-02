@@ -28,8 +28,8 @@
     <view class="weui-dialog">
         <image src="{{poster}}" mode='widthFix' style="margin:0 auto;width:100%;"></image>
         <view class="weui-dialog__ft">
-            <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="onShareCancel">取消</a>
-            <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="save">保存</a>
+            <button class="weui-dialog__btn_default" bindtap="onShareCancel">取消</button>
+            <button class="weui-dialog__btn_primary" bindtap="save">保存</button>
         </view>
     </view>
 </view>

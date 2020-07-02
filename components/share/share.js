@@ -37,40 +37,52 @@ Component({
       })
     },
     onImgOK:function onImgOK(e) {
+			let path = e.detail.path;
       this.setData({
         show: false,
         loading: false,
-        showPoster: true,
-        poster: e.detail.path
+				poster: path
+      },()=> {
+        this.triggerEvent('showPoster',{
+          path: path
+        });
+        this.setData({
+          showPoster: true,
+        })
       })
+
     },
     save:function save(){
       let that = this;
       wx.saveImageToPhotosAlbum({
         filePath: that.data.poster,
         success: res=> {
-          wx.showToast({
-            title: '已保存到相册',
-          })
           that.setData({
             showPoster: false
           })
+					that.triggerEvent('closePoster',{
+						saved:true
+					});
         }
       })
-      this.triggerEvent('closePoster');
+      
     },
     onShareCancel: function onShareCandel() {
       this.setData({
         showPoster: false
       });
-      this.triggerEvent('closePoster');
+			
+      this.triggerEvent('closePoster',{
+				saved:false
+			});
     },
     close: function close(e) {
       if (this.data.maskClosable) {
         this.setData({
-          show: false
+          show: false,
+          loading: false,
         });
-        this.triggerEvent('close');
+        this.triggerEvent('close')
       }
     }
   }

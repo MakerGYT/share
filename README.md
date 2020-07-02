@@ -1,8 +1,12 @@
 # Share
-微信小程序分享组件,可生成分享海报
+[![](https://img.shields.io/badge/basicLib-%3E=2.2.3-brightgreen?logo=wechat)](https://github.com/MakerGYT/share)
+[![GitHub stars](https://img.shields.io/github/stars/MakerGYT/share?style=social)](https://github.com/MakerGYT/share/stargazers)
+> 微信小程序分享组件,可生成分享海报
+
 ## 效果展示
 ![截图](https://imgkr.cn-bj.ufileos.com/729b480a-bdf1-46bf-be86-5cd17a8d928f.png)
 ![截图](https://imgkr.cn-bj.ufileos.com/6fa9dfca-8384-4051-a736-e2bbd3f458b7.png)
+![使用案例](https://cdn.blog.makergyt.com/mini/assets/poster-H.png)
 ## 如何使用
 1. 获取组件
 ```sh
@@ -19,7 +23,7 @@ git clone https://github.com/MakerGYT/share.git
 // 页面配置文件
 {
   "usingComponents":{
-    "share":"../../components/share/share" // 相对定位到share.js所在位置
+    "share":"/components/share/share"
   }
 }
 ```
@@ -59,6 +63,10 @@ export default class Poster{
   }
 }
 ```
+
+*Tips*
+如果是在Tab页调用组件，由于底部Tabbar层级较高，海报尺寸较长时会被其遮挡操作，可以通过`showPoster`和`closePoster`两个事件状态控制Tabbar的显隐。
+
 ## 属性列表
 | 属性 |类型| 默认值|必填|说明|
 | -- | --|--|--|--|
@@ -67,8 +75,8 @@ export default class Poster{
 |mask | Boolean |true | 否 |是否显示背景蒙层|
 | maskClosable | Boolean | false | 否 |点击背景蒙层是否可以关闭 |
 |bind:setPoster|eventhandler| | 是 | 点击分享到朋友圈时触发的事件，一般用来生成和传入实例化后的海报数据 |
-|bindclose|eventhandler||否| 点击背后的mask关闭掉share后触发的事件|
+|bind:showPoster|eventhandler| | 否 | 海报生成后触发的事件，,event.detail = {path} |
+|bind:closePoster|eventhandler||否| 关闭海报后触发的事件,event.detail = {saved} |
 
 ## 依赖
 - [Painter](https://github.com/Kujiale-Mobile/Painter)
-- [iconfont](https://www.iconfont.cn/)
