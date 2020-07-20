@@ -84,6 +84,9 @@ Component({
         });
         this.triggerEvent('close')
       }
-    }
+    },
+    preventdefault:function() {
+      
+    },
   }
 })

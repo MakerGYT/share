@@ -1,10 +1,11 @@
 <view style='position: relative;{{customStyle}};{{painterStyle}}'>
-  <canvas canvas-id="photo" style="{{photoStyle}};position: absolute; left: -9999px; top: -9999rpx;" />
-  <canvas canvas-id="bottom" style="{{painterStyle}};position: absolute;" />
-  <canvas canvas-id="k-canvas" style="{{painterStyle}};position: absolute;" />
-  <canvas canvas-id="top" style="{{painterStyle}};position: absolute;" />
-  <canvas 
-    canvas-id="front" 
+  <canvas type="2d" id="photo" style="{{photoStyle}};position: absolute; left: -9999px; top: -9999rpx;" />
+  <canvas type="2d" id="bottom" style="{{painterStyle}};position: absolute;" />
+  <canvas type="2d" id="k-canvas" style="{{painterStyle}};position: absolute;" />
+  <canvas type="2d" id="top" style="{{painterStyle}};position: absolute;" />
+  <canvas
+    type="2d" 
+    id="front" 
     style="{{painterStyle}};position: absolute;"
     bindtouchstart="onTouchStart"
     bindtouchmove="onTouchMove"

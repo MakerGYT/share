@@ -1,5 +1,6 @@
 import Pen from './lib/pen';
 import Downloader from './lib/downloader';
+import WxCanvas from './lib/wx-canvas';
 
 const util = require('./lib/util');
 
@@ -619,7 +620,7 @@ Component({
     initDancePalette() {
       this.isDisabled = true;
       this.initScreenK();
-      this.downloadImages(this.properties.dancePalette).then((palette) => {
+      this.downloadImages(this.properties.dancePalette).then(async (palette) => {
         this.currentPalette = palette
         const {
           width,
@@ -633,10 +634,10 @@ Component({
         this.setData({
           painterStyle: `width:${width.toPx()}px;height:${height.toPx()}px;`,
         });
-        this.frontContext || (this.frontContext = wx.createCanvasContext('front', this));
-        this.bottomContext || (this.bottomContext = wx.createCanvasContext('bottom', this));
-        this.topContext || (this.topContext = wx.createCanvasContext('top', this));
-        this.globalContext || (this.globalContext = wx.createCanvasContext('k-canvas', this));
+        this.frontContext || (this.frontContext = await this.getCanvasContext('front'));
+        this.bottomContext || (this.bottomContext = await this.getCanvasContext('bottom'));
+        this.topContext || (this.topContext = await this.getCanvasContext('top'));
+        this.globalContext || (this.globalContext = await this.getCanvasContext('k-canvas'));
         new Pen(this.bottomContext, palette).paint(() => {
           this.isDisabled = false;
           this.isDisabled = this.outterDisabled;
@@ -652,7 +653,7 @@ Component({
     startPaint() {
       this.initScreenK();
 
-      this.downloadImages(this.properties.palette).then((palette) => {
+      this.downloadImages(this.properties.palette).then(async (palette) => {
         const {
           width,
           height
@@ -674,7 +675,7 @@ Component({
         this.setData({
           photoStyle: `width:${this.canvasWidthInPx}px;height:${this.canvasHeightInPx}px;`,
         });
-        this.photoContext || (this.photoContext = wx.createCanvasContext('photo', this));
+        this.photoContext || (this.photoContext = await this.getCanvasContext('photo'));
 
         new Pen(this.photoContext, palette).paint(() => {
           this.saveImgToLocal();
@@ -747,11 +748,12 @@ Component({
 
     saveImgToLocal() {
       const that = this;
+      const dpr = getApp().systemInfo.pixelRatio
       setTimeout(() => {
         wx.canvasToTempFilePath({
-          canvasId: 'photo',
-          destWidth: that.canvasWidthInPx,
-          destHeight: that.canvasHeightInPx,
+          canvas: that.canvasNode,
+          destWidth: that.canvasWidthInPx * dpr,
+          destHeight: that.canvasHeightInPx * dpr,
           success: function (res) {
             that.getImageInfo(res.tempFilePath);
           },
@@ -764,7 +766,24 @@ Component({
         }, this);
       }, 300);
     },
-
+    getCanvasContext(id) {
+      return new Promise(resolve => {
+        const query = wx.createSelectorQuery().in(this);
+        const selectId = `#${id}`;
+        query.select(selectId)
+        .fields({ node: true, size: true })
+        .exec((res) => {
+          const canvasNode = this.canvasNode = res[0].node;
+          const ctx = canvasNode.getContext('2d');
+          const wxCanvas = new WxCanvas(ctx, id, true, canvasNode);
+          const dpr = wx.getSystemInfoSync().pixelRatio <=2 ? wx.getSystemInfoSync().pixelRatio : 2
+          wxCanvas.width = res[0].width * dpr
+          wxCanvas.height = res[0].height * dpr
+          wxCanvas.scale(dpr, dpr)
+          resolve(wxCanvas);
+        });
+      })
+    },
     getImageInfo(filePath) {
       const that = this;
       wx.getImageInfo({

@@ -1,0 +1,2 @@
+<button bindtap="toShare" type="primary">分享</button>
+<share show="{{shareShow}}" bind:setPoster="toMoments" palette="{{palette}}"></share>

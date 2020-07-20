@@ -30,7 +30,7 @@
   right: 0;
   left: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .weui-actionsheet {
@@ -123,9 +123,9 @@
 .weui-dialog {
   position: fixed;
   z-index: 5000;
-  top: 50%;
-  left: 16px;
-  right: 16px;
+  top: 54%;
+  left: 50rpx;
+  right: 50rpx;
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
   background-color: var(--weui-BG-2);
@@ -147,8 +147,6 @@
   display: -webkit-flex;
   display: flex;
   position: relative;
-  line-height: 56px;
-  min-height: 56px;
   font-size: 17px;
 }
 
@@ -171,14 +169,10 @@
   color: #07c160;
 	line-height: 2;
   background: #fff;
+  border-radius: 0;
 }
 .weui-dialog__btn_default {
   line-height: 2;
   background: #fff;
-}
-@media screen and (min-width:352px) {
-  .weui-dialog {
-    width: 320px;
-    margin: 0 auto;
-  }
+  border-radius: 0;
 }

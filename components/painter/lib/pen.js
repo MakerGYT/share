@@ -216,7 +216,8 @@ export default class Painter {
         if (!view.css.fontSize) {
           view.css.fontSize = '20rpx';
         }
-        this.ctx.font = `${textStyle} ${fontWeight} ${view.css.fontSize.toPx()}px ${view.css.fontFamily ? view.css.fontFamily : 'sans-serif'}`;
+        const fontFamily = view.css.fontFamily || 'sans-serif';
+        this.ctx.font = `${textStyle} ${fontWeight} ${view.css.fontSize.toPx()}px "${fontFamily}"`;
         // 计算行数
         let lines = 0;
         const linesArray = [];
@@ -246,7 +247,7 @@ export default class Painter {
       }
       case 'image': {
         // image的长宽设置成auto的逻辑处理
-        const ratio = getApp().systemInfo.pixelRatio ? getApp().systemInfo.pixelRatio : 2;
+        const ratio = (getApp().systemInfo.pixelRatio && getApp().systemInfo.pixelRatio <=2) ? getApp().systemInfo.pixelRatio : 2;
         // 有css却未设置width或height，则默认为auto
         if (view.css) {
           if (!view.css.width) {
@@ -532,7 +533,7 @@ export default class Painter {
     this.ctx.fillStyle = (view.css.color || 'black');
     if (this.isMoving && JSON.stringify(this.movingCache) !== JSON.stringify({})) {
       this.globalWidth[view.id] = this.movingCache.globalWidth
-      this.ctx.setTextAlign(view.css.textAlign ? view.css.textAlign : 'left');
+      this.ctx.textAlign = view.css.textAlign ? view.css.textAlign : 'left';
       for (const i of this.movingCache.lineArray) {
         const {
           measuredWith,
@@ -620,7 +621,7 @@ export default class Painter {
             text += '...';
             measuredWith = this.ctx.measureText(text).width;
           }
-          this.ctx.setTextAlign(view.css.textAlign ? view.css.textAlign : 'left');
+          this.ctx.textAlign = view.css.textAlign ? view.css.textAlign : 'left';
           let x;
           let lineX;
           switch (view.css.textAlign) {
